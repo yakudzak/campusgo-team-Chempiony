@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusGo — мероприятия колледжа</title>
+  <style>
+    :root {
+      --primary: #1F4E79;
+      --primary-light: #2E75B6;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #222;
+      --muted: #666;
+      --success: #1a7f37;
+      --error: #c0392b;
+      --border: #e0e4ea;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    header {
+      background: var(--primary);
+      color: white;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,.15);
+    }
+    header h1 { font-size: 1.4rem; font-weight: 700; }
+    header span { font-size: 0.85rem; opacity: 0.85; }
+    main { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+    h2 { margin-bottom: 1rem; color: var(--primary); font-size: 1.3rem; }
+    .cards { display: grid; gap: 1rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem;
+      cursor: pointer;
+      transition: box-shadow .2s, transform .15s;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); transform: translateY(-2px); }
+    .card h3 { color: var(--primary); margin-bottom: 0.4rem; }
+    .card .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .card .desc { font-size: 0.95rem; color: #444; }
+    .btn {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.65rem 1.4rem;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: background .2s;
+    }
+    .btn:hover { background: var(--primary-light); }
+    .btn-secondary { background: #6c757d; }
+    .btn-secondary:hover { background: #5a6268; }
+    .detail-meta { margin: 0.8rem 0; }
+    .detail-meta p { margin: 0.3rem 0; }
+    .detail-meta strong { color: var(--primary); }
+    form { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; max-width: 480px; }
+    label { display: block; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
+    input, select {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    input:focus, select:focus { outline: 2px solid var(--primary-light); border-color: var(--primary-light); }
+    .error-msg { color: var(--error); font-size: 0.85rem; margin-top: 0.25rem; display: none; }
+    .success-box {
+      background: #e8f5e9;
+      border: 1px solid #a5d6a7;
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      max-width: 480px;
+    }
+    .success-box h3 { color: var(--success); margin-bottom: 0.5rem; }
+    .back-link {
+      display: inline-block;
+      margin-bottom: 1rem;
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+    .back-link:hover { text-decoration: underline; }
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CampusGo</h1>
+    <span>Сервис студенческих мероприятий</span>
+  </header>
+
+  <main>
+    <!-- ЭКРАН 1: Список -->
+    <section id="list" class="screen active">
+      <h2>Мероприятия колледжа</h2>
+      <div class="cards" id="cards-container"></div>
+    </section>
+
+    <!-- ЭКРАН 2: Карточка -->
+    <section id="detail" class="screen">
+      <a class="back-link" onclick="showScreen('list')">← Назад к списку</a>
+      <div id="detail-content"></div>
+    </section>
+
+    <!-- ЭКРАН 3: Форма -->
+    <section id="form-screen" class="screen">
+      <a class="back-link" onclick="showScreen('detail')">← Назад к мероприятию</a>
+      <h2>Заявка на участие</h2>
+      <p id="form-event-name" style="margin-bottom:1rem;color:var(--muted)"></p>
+      <form id="apply-form" novalidate>
+        <label for="name">Имя *</label>
+        <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
+        <div class="error-msg" id="err-name">Укажите имя</div>
+
+        <label for="group">Группа *</label>
+        <input type="text" id="group" name="group" placeholder="Например, ИС-21" required>
+        <div class="error-msg" id="err-group">Укажите группу</div>
+
+        <label for="contact">Контакт (email или телефон)</label>
+        <input type="text" id="contact" name="contact" placeholder="Необязательно">
+
+        <button type="submit" class="btn">Отправить заявку</button>
+      </form>
+    </section>
+
+    <!-- ЭКРАН 4: Успех -->
+    <section id="success" class="screen">
+      <div class="success-box">
+        <h3>✓ Заявка отправлена</h3>
+        <p>Спасибо! Ваша заявка на участие принята.<br>Организатор свяжется с вами при необходимости.</p>
+        <button class="btn" onclick="showScreen('list')" style="margin-top:1rem">Вернуться к списку</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    CampusGo MVP · Учебный проект · Спринт 1 · Команда EventFlow
+  </footer>
+
+  <script>
+    const events = [
+      {
+        id: 1,
+        title: "День открытых дверей",
+        date: "25 октября 2025, 10:00",
+        place: "Главный корпус, актовый зал",
+        description: "Знакомство с колледжем, мастер-классы от преподавателей и общение со студентами. Приглашаются абитуриенты и их родители."
+      },
+      {
+        id: 2,
+        title: "Квиз-вечер «Что? Где? Когда?»",
+        date: "28 октября 2025, 18:00",
+        place: "Аудитория 305",
+        description: "Интеллектуальная игра для команд по 4–6 человек. Регистрация обязательна. Призы победителям!"
+      },
+      {
+        id: 3,
+        title: "Хакатон CampusCode",
+        date: "1–2 ноября 2025",
+        place: "Корпус Б, лаборатория 12",
+        description: "24-часовой хакатон по веб-разработке. Собирайте команду или приходите в одиночку — поможем найти напарников."
+      }
+    ];
+
+    let currentEvent = null;
+
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function renderList() {
+      const container = document.getElementById('cards-container');
+      container.innerHTML = events.map(e => `
+        <div class="card" onclick="openDetail(${e.id})">
+          <h3>${e.title}</h3>
+          <div class="meta">📅 ${e.date} · 📍 ${e.place}</div>
+          <div class="desc">${e.description.substring(0, 100)}…</div>
+        </div>
+      `).join('');
+    }
+
+    function openDetail(id) {
+      currentEvent = events.find(e => e.id === id);
+      document.getElementById('detail-content').innerHTML = `
+        <h2>${currentEvent.title}</h2>
+        <div class="detail-meta">
+          <p><strong>Дата:</strong> ${currentEvent.date}</p>
+          <p><strong>Место:</strong> ${currentEvent.place}</p>
+        </div>
+        <p>${currentEvent.description}</p>
+        <button class="btn" onclick="openForm()">Подать заявку</button>
+      `;
+      showScreen('detail');
+    }
+
+    function openForm() {
+      document.getElementById('form-event-name').textContent = 'Мероприятие: ' + currentEvent.title;
+      document.getElementById('apply-form').reset();
+      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+      showScreen('form-screen');
+    }
+
+    document.getElementById('apply-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      let valid = true;
+
+      const name = document.getElementById('name').value.trim();
+      const group = document.getElementById('group').value.trim();
+
+      document.getElementById('err-name').style.display = name ? 'none' : 'block';
+      document.getElementById('err-group').style.display = group ? 'none' : 'block';
+
+      if (!name || !group) valid = false;
+
+      if (valid) {
+        // В MVP данные никуда не отправляются — только демонстрация
+        showScreen('success');
+      }
+    });
+
+    renderList();
+  </script>
+</body>
+</html>

@@ -1,250 +1,434 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CampusGo — мероприятия колледжа</title>
-  <style>
-    :root {
-      --primary: #1F4E79;
-      --primary-light: #2E75B6;
-      --bg: #f5f7fa;
-      --card: #ffffff;
-      --text: #222;
-      --muted: #666;
-      --success: #1a7f37;
-      --error: #c0392b;
-      --border: #e0e4ea;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.5;
-      min-height: 100vh;
-    }
-    header {
-      background: var(--primary);
-      color: white;
-      padding: 1rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: 0 2px 8px rgba(0,0,0,.15);
-    }
-    header h1 { font-size: 1.4rem; font-weight: 700; }
-    header span { font-size: 0.85rem; opacity: 0.85; }
-    main { max-width: 900px; margin: 0 auto; padding: 1.5rem; }
-    .screen { display: none; }
-    .screen.active { display: block; }
-    h2 { margin-bottom: 1rem; color: var(--primary); font-size: 1.3rem; }
-    .cards { display: grid; gap: 1rem; }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 1.2rem;
-      cursor: pointer;
-      transition: box-shadow .2s, transform .15s;
-    }
-    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); transform: translateY(-2px); }
-    .card h3 { color: var(--primary); margin-bottom: 0.4rem; }
-    .card .meta { color: var(--muted); font-size: 0.9rem; margin-bottom: 0.5rem; }
-    .card .desc { font-size: 0.95rem; color: #444; }
-    .btn {
-      display: inline-block;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 0.65rem 1.4rem;
-      font-size: 1rem;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: background .2s;
-    }
-    .btn:hover { background: var(--primary-light); }
-    .btn-secondary { background: #6c757d; }
-    .btn-secondary:hover { background: #5a6268; }
-    .detail-meta { margin: 0.8rem 0; }
-    .detail-meta p { margin: 0.3rem 0; }
-    .detail-meta strong { color: var(--primary); }
-    form { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; max-width: 480px; }
-    label { display: block; font-weight: 600; margin-bottom: 0.3rem; margin-top: 0.9rem; }
-    input, select {
-      width: 100%;
-      padding: 0.55rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      font-size: 1rem;
-    }
-    input:focus, select:focus { outline: 2px solid var(--primary-light); border-color: var(--primary-light); }
-    .error-msg { color: var(--error); font-size: 0.85rem; margin-top: 0.25rem; display: none; }
-    .success-box {
-      background: #e8f5e9;
-      border: 1px solid #a5d6a7;
-      border-radius: 10px;
-      padding: 1.5rem;
-      text-align: center;
-      max-width: 480px;
-    }
-    .success-box h3 { color: var(--success); margin-bottom: 0.5rem; }
-    .back-link {
-      display: inline-block;
-      margin-bottom: 1rem;
-      color: var(--primary);
-      text-decoration: none;
-      font-size: 0.95rem;
-      cursor: pointer;
-    }
-    .back-link:hover { text-decoration: underline; }
-    footer {
-      text-align: center;
-      padding: 1.5rem;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusGo — мероприятия колледжа</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a0533 0%, #2d1b69 25%, #6b2fa0 50%, #e91e8c 75%, #ff6b35 100%);
+            background-attachment: fixed;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 20% 50%, rgba(120, 0, 255, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 0, 128, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 80%, rgba(255, 107, 53, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            background: linear-gradient(90deg, #ff6b35, #e91e8c, #7b2ff7, #00d4ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            margin-bottom: 10px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .header p {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Рекламные баннеры */
+        .ads-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .ad-banner {
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .ad-banner:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 50px rgba(123, 47, 247, 0.5);
+        }
+
+        .ad-banner img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .ad-banner.musor-drop {
+            border: 2px solid rgba(123, 47, 247, 0.6);
+        }
+
+        .ad-banner.tatyana {
+            border: 2px solid rgba(255, 165, 0, 0.6);
+        }
+
+        /* Карточки мероприятий */
+        .events-section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(233, 30, 140, 0.5);
+        }
+
+        .event-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .event-card:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(233, 30, 140, 0.5);
+            transform: translateX(5px);
+            box-shadow: 0 5px 25px rgba(233, 30, 140, 0.3);
+        }
+
+        .event-card h3 {
+            font-size: 1.3em;
+            margin-bottom: 8px;
+            color: #ff6b9d;
+        }
+
+        .event-card p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95em;
+        }
+
+        .event-card .event-meta {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .event-card .event-meta span {
+            background: rgba(123, 47, 247, 0.3);
+            padding: 4px 10px;
+            border-radius: 20px;
+        }
+
+        /* Кнопка назад */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #7b2ff7, #e91e8c);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+
+        .back-btn:hover {
+            transform: translateX(-3px);
+            box-shadow: 0 5px 20px rgba(123, 47, 247, 0.5);
+        }
+
+        /* Форма заявки */
+        .form-section {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-section h2 {
+            font-size: 1.8em;
+            margin-bottom: 24px;
+            background: linear-gradient(90deg, #ff6b35, #e91e8c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .form-group label .required {
+            color: #ff4757;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #e91e8c;
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 0 20px rgba(233, 30, 140, 0.3);
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #7b2ff7, #e91e8c, #ff6b35);
+            background-size: 200% 200%;
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(233, 30, 140, 0.5);
+        }
+
+        /* Успешная отправка */
+        .success-message {
+            text-align: center;
+            padding: 40px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 24px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .success-message .checkmark {
+            font-size: 4em;
+            margin-bottom: 16px;
+        }
+
+        .success-message h3 {
+            font-size: 1.5em;
+            color: #00ff88;
+            margin-bottom: 10px;
+        }
+
+        .success-message p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 40px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .ads-section {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .form-section {
+                padding: 24px;
+            }
+        }
+
+        /* Анимация появления */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .event-card, .ad-banner, .form-section {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .event-card:nth-child(2) { animation-delay: 0.1s; }
+        .event-card:nth-child(3) { animation-delay: 0.2s; }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>CampusGo</h1>
-    <span>Сервис студенческих мероприятий</span>
-  </header>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🎉 CampusGo</h1>
+            <p>Сервис студенческих мероприятий</p>
+        </header>
 
-  <main>
-    <!-- ЭКРАН 1: Список -->
-    <section id="list" class="screen active">
-      <h2>Мероприятия колледжа</h2>
-      <div class="cards" id="cards-container"></div>
-    </section>
+        <!-- Рекламные баннеры -->
+        <section class="ads-section">
+            <div class="ad-banner musor-drop">
+                <img src="musor_drop_ad.png" alt="MUSOR DROP — Реклама">
+            </div>
+            <div class="ad-banner tatyana">
+                <img src="tatyana_ad.png" alt="Татьяна — 1000 метров от вас">
+            </div>
+        </section>
 
-    <!-- ЭКРАН 2: Карточка -->
-    <section id="detail" class="screen">
-      <a class="back-link" onclick="showScreen('list')">← Назад к списку</a>
-      <div id="detail-content"></div>
-    </section>
+        <!-- Список мероприятий -->
+        <section class="events-section">
+            <h2 class="section-title">📅 Мероприятия колледжа</h2>
 
-    <!-- ЭКРАН 3: Форма -->
-    <section id="form-screen" class="screen">
-      <a class="back-link" onclick="showScreen('detail')">← Назад к мероприятию</a>
-      <h2>Заявка на участие</h2>
-      <p id="form-event-name" style="margin-bottom:1rem;color:var(--muted)"></p>
-      <form id="apply-form" novalidate>
-        <label for="name">Имя *</label>
-        <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
-        <div class="error-msg" id="err-name">Укажите имя</div>
+            <div class="event-card">
+                <h3>Хакатон по веб-разработке</h3>
+                <p>48 часов кодинга, менторство от индустрии, призы от спонсоров</p>
+                <div class="event-meta">
+                    <span>📍 Корпус А, 301</span>
+                    <span>🕐 15 дек, 10:00</span>
+                </div>
+            </div>
 
-        <label for="group">Группа *</label>
-        <input type="text" id="group" name="group" placeholder="Например, ИС-21" required>
-        <div class="error-msg" id="err-group">Укажите группу</div>
+            <div class="event-card">
+                <h3>Концерт студенческой группы</h3>
+                <p>Рок, инди, электроника — живая музыка от наших студентов</p>
+                <div class="event-meta">
+                    <span>📍 Актовый зал</span>
+                    <span>🕐 20 дек, 18:00</span>
+                </div>
+            </div>
 
-        <label for="contact">Контакт (email или телефон)</label>
-        <input type="text" id="contact" name="contact" placeholder="Необязательно">
+            <div class="event-card">
+                <h3>Воркшоп по дизайну</h3>
+                <p>Figma, UI/UX, прототипирование — от основ до продвинутых техник</p>
+                <div class="event-meta">
+                    <span>📍 Корпус Б, 205</span>
+                    <span>🕐 22 дек, 14:00</span>
+                </div>
+            </div>
+        </section>
 
-        <button type="submit" class="btn">Отправить заявку</button>
-      </form>
-    </section>
+        <!-- Форма заявки -->
+        <section class="form-section">
+            <a href="#" class="back-btn">← Назад к списку</a>
+            <h2>Заявка на участие</h2>
+            <form id="applicationForm">
+                <div class="form-group">
+                    <label>Имя <span class="required">*</span></label>
+                    <input type="text" placeholder="Укажите имя" required>
+                </div>
+                <div class="form-group">
+                    <label>Группа <span class="required">*</span></label>
+                    <input type="text" placeholder="Укажите группу" required>
+                </div>
+                <div class="form-group">
+                    <label>Контакт (email или телефон)</label>
+                    <input type="text" placeholder="example@mail.com или +7...">
+                </div>
+                <button type="submit" class="submit-btn">Отправить заявку</button>
+            </form>
+        </section>
 
-    <!-- ЭКРАН 4: Успех -->
-    <section id="success" class="screen">
-      <div class="success-box">
-        <h3>✓ Заявка отправлена</h3>
-        <p>Спасибо! Ваша заявка на участие принята.<br>Организатор свяжется с вами при необходимости.</p>
-        <button class="btn" onclick="showScreen('list')" style="margin-top:1rem">Вернуться к списку</button>
-      </div>
-    </section>
-  </main>
+        <!-- Сообщение об успехе (скрыто по умолчанию) -->
+        <section class="success-message" id="successMessage" style="display: none;">
+            <div class="checkmark">✓</div>
+            <h3>Заявка отправлена</h3>
+            <p>Спасибо! Ваша заявка на участие принята.<br>Организатор свяжется с вами при необходимости.</p>
+            <br>
+            <a href="#" class="back-btn">Вернуться к списку</a>
+        </section>
 
-  <footer>
-    CampusGo MVP · Учебный проект · Спринт 1 · Команда EventFlow
-  </footer>
+        <!-- Footer -->
+        <footer class="footer">
+            CampusGo MVP · Учебный проект · Спринт 1 · Команда EventFlow
+        </footer>
+    </div>
 
-  <script>
-    const events = [
-      {
-        id: 1,
-        title: "День открытых дверей",
-        date: "25 октября 2025, 10:00",
-        place: "Главный корпус, актовый зал",
-        description: "Знакомство с колледжем, мастер-классы от преподавателей и общение со студентами. Приглашаются абитуриенты и их родители."
-      },
-      {
-        id: 2,
-        title: "Квиз-вечер «Что? Где? Когда?»",
-        date: "28 октября 2025, 18:00",
-        place: "Аудитория 305",
-        description: "Интеллектуальная игра для команд по 4–6 человек. Регистрация обязательна. Призы победителям!"
-      },
-      {
-        id: 3,
-        title: "Хакатон CampusCode",
-        date: "1–2 ноября 2025",
-        place: "Корпус Б, лаборатория 12",
-        description: "24-часовой хакатон по веб-разработке. Собирайте команду или приходите в одиночку — поможем найти напарников."
-      }
-    ];
-
-    let currentEvent = null;
-
-    function showScreen(id) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-      window.scrollTo(0, 0);
-    }
-
-    function renderList() {
-      const container = document.getElementById('cards-container');
-      container.innerHTML = events.map(e => `
-        <div class="card" onclick="openDetail(${e.id})">
-          <h3>${e.title}</h3>
-          <div class="meta">📅 ${e.date} · 📍 ${e.place}</div>
-          <div class="desc">${e.description.substring(0, 100)}…</div>
-        </div>
-      `).join('');
-    }
-
-    function openDetail(id) {
-      currentEvent = events.find(e => e.id === id);
-      document.getElementById('detail-content').innerHTML = `
-        <h2>${currentEvent.title}</h2>
-        <div class="detail-meta">
-          <p><strong>Дата:</strong> ${currentEvent.date}</p>
-          <p><strong>Место:</strong> ${currentEvent.place}</p>
-        </div>
-        <p>${currentEvent.description}</p>
-        <button class="btn" onclick="openForm()">Подать заявку</button>
-      `;
-      showScreen('detail');
-    }
-
-    function openForm() {
-      document.getElementById('form-event-name').textContent = 'Мероприятие: ' + currentEvent.title;
-      document.getElementById('apply-form').reset();
-      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-      showScreen('form-screen');
-    }
-
-    document.getElementById('apply-form').addEventListener('submit', function(e) {
-      e.preventDefault();
-      let valid = true;
-
-      const name = document.getElementById('name').value.trim();
-      const group = document.getElementById('group').value.trim();
-
-      document.getElementById('err-name').style.display = name ? 'none' : 'block';
-      document.getElementById('err-group').style.display = group ? 'none' : 'block';
-
-      if (!name || !group) valid = false;
-
-      if (valid) {
-        // В MVP данные никуда не отправляются — только демонстрация
-        showScreen('success');
-      }
-    });
-
-    renderList();
-  </script>
+    <script>
+        document.getElementById('applicationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.querySelector('.form-section h2').style.display = 'none';
+            document.querySelector('.form-section .back-btn').style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        });
+    </script>
 </body>
 </html>

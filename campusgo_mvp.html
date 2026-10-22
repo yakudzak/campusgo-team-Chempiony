@@ -6,439 +6,584 @@
   <title>CampusGo — мероприятия колледжа</title>
   <style>
     :root {
-      --neon-pink: #ff2d95;
-      --neon-pink-glow: #ff2d9580;
-      --neon-yellow: #ffee00;
-      --neon-yellow-glow: #ffee0080;
-      --lime: #39ff14;
-      --lime-glow: #39ff1480;
-      --black: #0a0a0a;
-      --dark: #121212;
-      --card-bg: #1a1a1a;
-      --text: #ffffff;
-      --muted: #b0b0b0;
-      --success: #39ff14;
-      --error: #ff2d95;
-      --border: #333;
+      --bg: #f4efe6;
+      --card: #faf7f0;
+      --ink: #2c241b;
+      --muted: #6b5e4e;
+      --accent: #8b3a2b;
+      --accent-light: #a85a4a;
+      --border: #d9cfc0;
+      --success: #3d6b4f;
+      --ad-bg: #e8dfd0;
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
-      background: var(--black);
-      color: var(--text);
-      line-height: 1.5;
+      font-family: "Georgia", "Times New Roman", serif;
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.6;
       min-height: 100vh;
-      background-image:
-        radial-gradient(ellipse at 20% 20%, rgba(255,45,149,0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 80%, rgba(255,238,0,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(57,255,20,0.08) 0%, transparent 60%);
+      font-size: 18px;
     }
+
     header {
-      background: linear-gradient(90deg, #0a0a0a 0%, #1a0a14 50%, #0a0a0a 100%);
-      border-bottom: 2px solid var(--neon-pink);
-      box-shadow: 0 0 20px var(--neon-pink-glow), 0 4px 30px rgba(0,0,0,0.8);
-      color: white;
-      padding: 1rem 1.5rem;
+      background: var(--ink);
+      color: #f4efe6;
+      padding: 1.2rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: relative;
-      z-index: 10;
+      border-bottom: 4px solid var(--accent);
+      flex-wrap: wrap;
+      gap: 0.8rem;
     }
     header h1 {
-      font-size: 1.6rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 30px var(--neon-pink-glow);
-      letter-spacing: 1px;
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    header .header-right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
     }
     header span {
-      font-size: 0.85rem;
-      color: var(--lime);
-      text-shadow: 0 0 10px var(--lime-glow);
-      opacity: 0.95;
+      font-size: 1rem;
+      opacity: 0.85;
+      font-family: system-ui, sans-serif;
+    }
+    .support-btn, .iq-btn {
+      background: transparent;
+      border: 2px solid #f4efe6;
+      color: #f4efe6;
+      padding: 0.4rem 1rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-family: system-ui, sans-serif;
+      transition: all 0.2s;
+    }
+    .support-btn:hover, .iq-btn:hover {
+      background: #f4efe6;
+      color: var(--ink);
     }
 
-    /* Layout with side banners */
-    .page-wrapper {
-      display: grid;
-      grid-template-columns: 180px 1fr 180px;
-      gap: 1rem;
-      max-width: 1200px;
+    .page {
+      display: flex;
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 1.2rem 0.8rem;
-      min-height: calc(100vh - 140px);
+      padding: 2rem 1.5rem;
+      gap: 2rem;
     }
-    @media (max-width: 900px) {
-      .page-wrapper {
-        grid-template-columns: 1fr;
-      }
-      .side-banner {
-        display: none;
-      }
+    .main { flex: 1; min-width: 0; }
+
+    /* Реклама: сверху узкая полоса + боковая колонка */
+    .ad-top {
+      background: var(--ad-bg);
+      border: 2px solid var(--border);
+      padding: 0.9rem 1.2rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .ad-top .label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: var(--muted);
+      font-family: system-ui, sans-serif;
+    }
+    .ad-top p {
+      font-size: 0.95rem;
+      margin: 0;
+      flex: 1;
+    }
+    .ad-top .ad-btn {
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-family: system-ui, sans-serif;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .ad-top .ad-btn:hover {
+      background: var(--accent);
+      color: #faf7f0;
     }
 
-    /* Side advertising banners */
-    .side-banner {
-      position: sticky;
-      top: 1rem;
-      align-self: start;
-      border-radius: 12px;
-      overflow: hidden;
-      background: var(--card-bg);
-      border: 2px solid var(--neon-yellow);
-      box-shadow: 0 0 15px var(--neon-yellow-glow), 0 0 30px rgba(255,45,149,0.2);
+    .ad-sidebar {
+      width: 240px;
+      flex-shrink: 0;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      padding: 0.8rem;
+      gap: 1.1rem;
+    }
+    .ad-card {
+      background: var(--ad-bg);
+      border: 2px solid var(--border);
+      padding: 1.2rem;
       text-align: center;
-      transition: transform 0.2s, box-shadow 0.2s;
     }
-    .side-banner:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 0 25px var(--neon-yellow-glow), 0 0 40px rgba(255,45,149,0.35);
-    }
-    .side-banner img {
-      width: 100%;
-      max-width: 150px;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 0.6rem;
-      filter: drop-shadow(0 0 8px var(--neon-pink-glow));
-    }
-    .side-banner .ad-title {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--neon-pink);
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.3rem;
-      text-shadow: 0 0 8px var(--neon-pink-glow);
-    }
-    .side-banner .ad-text {
+    .ad-card .label {
       font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
       color: var(--muted);
-      line-height: 1.3;
+      margin-bottom: 0.6rem;
+      font-family: system-ui, sans-serif;
     }
-    .side-banner.right {
-      border-color: var(--lime);
-      box-shadow: 0 0 15px var(--lime-glow), 0 0 30px rgba(255,238,0,0.15);
-    }
-    .side-banner.right:hover {
-      box-shadow: 0 0 25px var(--lime-glow), 0 0 40px rgba(255,238,0,0.3);
-    }
-    .side-banner.right .ad-title {
-      color: var(--lime);
-      text-shadow: 0 0 8px var(--lime-glow);
-    }
-
-    /* Neon promo card for right banner */
-    .neon-promo {
-      background: linear-gradient(145deg, #1a0a14 0%, #0a1a0a 100%);
-      border: 2px solid var(--lime);
-      border-radius: 10px;
-      padding: 1rem 0.6rem;
-      width: 100%;
-      box-shadow: inset 0 0 20px rgba(57,255,20,0.1);
-    }
-    .neon-promo .big {
+    .ad-card h4 {
       font-size: 1.1rem;
-      font-weight: 800;
-      background: linear-gradient(90deg, var(--neon-yellow), var(--lime));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 0.4rem;
-      line-height: 1.2;
+      margin-bottom: 0.45rem;
+      color: var(--accent);
     }
-    .neon-promo .small {
-      font-size: 0.7rem;
-      color: var(--neon-pink);
-      margin-bottom: 0.5rem;
+    .ad-card p {
+      font-size: 0.9rem;
+      color: var(--ink);
+      margin-bottom: 0.8rem;
     }
-    .neon-promo .cta {
+    .ad-card .ad-btn {
       display: inline-block;
-      margin-top: 0.4rem;
-      padding: 0.35rem 0.7rem;
-      background: transparent;
-      border: 1px solid var(--neon-yellow);
-      color: var(--neon-yellow);
-      font-size: 0.65rem;
-      font-weight: 700;
-      border-radius: 4px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      text-shadow: 0 0 6px var(--neon-yellow-glow);
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      padding: 0.3rem 0.8rem;
+      font-size: 0.85rem;
+      text-decoration: none;
+      font-family: system-ui, sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
     }
+    .ad-card .ad-btn:hover {
+      background: var(--accent);
+      color: #faf7f0;
+    }
+    .ad-support {
+      background: #f0e6d8;
+      border-color: var(--accent);
+    }
+    .ad-support h4 { color: var(--ink); }
 
-    main {
-      max-width: 100%;
-      padding: 0;
-    }
     .screen { display: none; }
     .screen.active { display: block; }
+
     h2 {
-      margin-bottom: 1.2rem;
-      font-size: 1.4rem;
-      font-weight: 700;
-      background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      text-shadow: 0 0 20px var(--neon-pink-glow);
+      font-size: 1.7rem;
+      margin-bottom: 1.4rem;
+      color: var(--ink);
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0.5rem;
     }
-    .cards { display: grid; gap: 1.1rem; }
+
+    .cards { display: grid; gap: 1.3rem; }
+
     .card {
-      background: var(--card-bg);
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 1.3rem;
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 1.5rem;
       cursor: pointer;
-      transition: all 0.25s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow), var(--lime));
-      opacity: 0.7;
+      transition: border-color 0.2s, background 0.2s;
     }
     .card:hover {
-      border-color: var(--neon-pink);
-      box-shadow: 0 0 20px var(--neon-pink-glow), 0 8px 25px rgba(0,0,0,0.5);
-      transform: translateY(-4px);
+      border-color: var(--accent);
+      background: #fff;
     }
     .card h3 {
-      color: var(--neon-yellow);
-      margin-bottom: 0.45rem;
-      font-size: 1.15rem;
-      text-shadow: 0 0 10px var(--neon-yellow-glow);
+      font-size: 1.35rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
     }
     .card .meta {
-      color: var(--lime);
-      font-size: 0.88rem;
-      margin-bottom: 0.55rem;
-      text-shadow: 0 0 6px var(--lime-glow);
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+      font-family: system-ui, sans-serif;
     }
     .card .desc {
-      font-size: 0.93rem;
-      color: var(--muted);
+      font-size: 1.05rem;
+      color: #4a4035;
     }
 
     .btn {
       display: inline-block;
-      background: linear-gradient(135deg, var(--neon-pink), #c41a6e);
-      color: white;
+      background: var(--accent);
+      color: #faf7f0;
       border: none;
-      border-radius: 8px;
-      padding: 0.7rem 1.5rem;
-      font-size: 1rem;
-      font-weight: 600;
+      padding: 0.75rem 1.6rem;
+      font-size: 1.1rem;
       cursor: pointer;
-      margin-top: 1rem;
-      transition: all 0.2s;
-      box-shadow: 0 0 15px var(--neon-pink-glow);
-      text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+      margin-top: 1.2rem;
+      font-family: system-ui, sans-serif;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
     }
-    .btn:hover {
-      background: linear-gradient(135deg, #ff4dab, var(--neon-pink));
-      box-shadow: 0 0 25px var(--neon-pink-glow), 0 0 40px rgba(255,45,149,0.4);
-      transform: scale(1.03);
-    }
-    .btn-secondary {
-      background: linear-gradient(135deg, #444, #2a2a2a);
-      box-shadow: 0 0 10px rgba(255,255,255,0.1);
-    }
-    .btn-secondary:hover {
-      background: linear-gradient(135deg, #555, #333);
-      box-shadow: 0 0 15px rgba(255,255,255,0.15);
-    }
+    .btn:hover { background: var(--accent-light); }
 
-    .detail-meta { margin: 0.9rem 0; }
-    .detail-meta p { margin: 0.35rem 0; color: var(--muted); }
-    .detail-meta strong {
-      color: var(--lime);
-      text-shadow: 0 0 6px var(--lime-glow);
+    .detail-meta {
+      margin: 1rem 0 1.4rem;
+      font-size: 1.1rem;
     }
-    #detail-content p {
-      color: #ddd;
-      margin-top: 0.8rem;
-    }
+    .detail-meta p { margin: 0.4rem 0; }
+    .detail-meta strong { color: var(--accent); }
 
     form {
-      background: var(--card-bg);
-      border: 1px solid #2a2a2a;
-      border-radius: 12px;
-      padding: 1.6rem;
-      max-width: 480px;
-      box-shadow: 0 0 20px rgba(255,45,149,0.15);
-    }
-    form::before {
-      content: '';
-      display: block;
-      height: 3px;
-      background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow), var(--lime));
-      margin: -1.6rem -1.6rem 1.2rem -1.6rem;
-      border-radius: 12px 12px 0 0;
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 2rem;
+      max-width: 460px;
     }
     label {
       display: block;
       font-weight: 600;
-      margin-bottom: 0.3rem;
-      margin-top: 0.9rem;
-      color: var(--neon-yellow);
-      font-size: 0.95rem;
+      margin-bottom: 0.35rem;
+      margin-top: 1.1rem;
+      font-size: 1.05rem;
     }
-    input, select {
+    input {
       width: 100%;
-      padding: 0.6rem 0.8rem;
-      border: 1px solid #333;
-      border-radius: 8px;
-      font-size: 1rem;
-      background: #0f0f0f;
-      color: var(--text);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      padding: 0.7rem 0.9rem;
+      border: 2px solid var(--border);
+      background: #fff;
+      font-size: 1.1rem;
+      font-family: system-ui, sans-serif;
+      color: var(--ink);
     }
-    input:focus, select:focus {
+    input:focus {
       outline: none;
-      border-color: var(--neon-pink);
-      box-shadow: 0 0 12px var(--neon-pink-glow);
+      border-color: var(--accent);
     }
-    input::placeholder { color: #666; }
     .error-msg {
-      color: var(--error);
-      font-size: 0.85rem;
-      margin-top: 0.25rem;
+      color: #a33;
+      font-size: 0.95rem;
+      margin-top: 0.3rem;
       display: none;
-      text-shadow: 0 0 6px var(--neon-pink-glow);
+      font-family: system-ui, sans-serif;
     }
+
     .success-box {
-      background: linear-gradient(145deg, #0a1a0a, #0f1a0f);
-      border: 2px solid var(--lime);
-      border-radius: 12px;
-      padding: 1.8rem;
+      background: #e8f0e9;
+      border: 2px solid #a8c5b0;
+      padding: 2.2rem;
       text-align: center;
       max-width: 480px;
-      box-shadow: 0 0 25px var(--lime-glow);
     }
     .success-box h3 {
-      color: var(--lime);
-      margin-bottom: 0.6rem;
-      font-size: 1.3rem;
-      text-shadow: 0 0 15px var(--lime-glow);
+      color: var(--success);
+      font-size: 1.5rem;
+      margin-bottom: 0.7rem;
     }
-    .success-box p { color: var(--muted); }
+
+    .auth-wrap {
+      max-width: 440px;
+      margin: 2.5rem auto 0;
+      text-align: center;
+    }
+    .auth-wrap h2 { border: none; margin-bottom: 0.5rem; }
+    .auth-wrap .subtitle {
+      color: var(--muted);
+      margin-bottom: 1.8rem;
+      font-size: 1.1rem;
+    }
+    .auth-form { text-align: left; }
+
     .back-link {
       display: inline-block;
-      margin-bottom: 1rem;
-      color: var(--neon-pink);
+      margin-bottom: 1.2rem;
+      color: var(--accent);
       text-decoration: none;
-      font-size: 0.95rem;
+      font-size: 1.05rem;
       cursor: pointer;
-      transition: color 0.2s, text-shadow 0.2s;
+      font-family: system-ui, sans-serif;
     }
-    .back-link:hover {
-      color: var(--neon-yellow);
-      text-shadow: 0 0 10px var(--neon-yellow-glow);
-      text-decoration: underline;
+    .back-link:hover { text-decoration: underline; }
+
+    /* Модалки */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(44, 36, 27, 0.6);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
     }
+    .modal-overlay.active { display: flex; }
+    .modal {
+      background: var(--card);
+      border: 3px solid var(--border);
+      padding: 2rem;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal h3 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: var(--accent);
+    }
+    .modal p { margin-bottom: 0.6rem; font-size: 1.05rem; }
+    .modal .close-btn { margin-top: 1.4rem; }
+
+    /* Тест IQ */
+    .iq-question {
+      text-align: left;
+      margin: 1.2rem 0;
+      padding: 1rem;
+      background: #fff;
+      border: 2px solid var(--border);
+    }
+    .iq-question p {
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+    .iq-options label {
+      display: block;
+      margin: 0.4rem 0;
+      font-weight: normal;
+      cursor: pointer;
+      padding: 0.35rem 0;
+    }
+    .iq-options input {
+      width: auto;
+      margin-right: 0.5rem;
+    }
+    .iq-result {
+      margin-top: 1.2rem;
+      padding: 1rem;
+      background: #e8f0e9;
+      border: 2px solid #a8c5b0;
+      display: none;
+    }
+    .iq-result.show { display: block; }
+
+    .user-bar {
+      background: var(--card);
+      border: 2px solid var(--border);
+      padding: 0.7rem 1rem;
+      margin-bottom: 1.2rem;
+      font-size: 0.95rem;
+      font-family: system-ui, sans-serif;
+      color: var(--muted);
+    }
+    .user-bar strong { color: var(--accent); }
+
     footer {
       text-align: center;
-      padding: 1.4rem;
+      padding: 2rem 1rem;
       color: var(--muted);
-      font-size: 0.82rem;
-      border-top: 1px solid #222;
-      margin-top: 1rem;
-      background: linear-gradient(180deg, transparent, rgba(255,45,149,0.05));
+      font-size: 0.95rem;
+      border-top: 1px solid var(--border);
+      margin-top: 2rem;
+      font-family: system-ui, sans-serif;
     }
-    footer span {
-      color: var(--lime);
+
+    @media (max-width: 800px) {
+      .page { flex-direction: column; }
+      .ad-sidebar { width: 100%; order: 1; }
+      header { flex-direction: column; text-align: center; }
+      .header-right { justify-content: center; }
+      .ad-top { flex-direction: column; text-align: center; }
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>CampusGo</h1>
-    <span>Сервис студенческих мероприятий</span>
+    <div class="header-right">
+      <span>Сервис студенческих мероприятий</span>
+      <button class="iq-btn" onclick="openIQ()">Тест IQ</button>
+      <button class="support-btn" onclick="openSupport()">Техподдержка</button>
+    </div>
   </header>
 
-  <div class="page-wrapper">
-    <!-- LEFT BANNER -->
-    <aside class="side-banner left">
-      <div class="ad-title">Реклама</div>
-      <img src="musor-drop-logo.jpg" alt="МУСОР ДРОП">
-      <div class="ad-text">МУСОР ДРОП — свежий дроп мерча и мерча. Неон, стиль, вайб.</div>
-    </aside>
+  <div class="page">
+    <div class="main">
 
-    <!-- MAIN CONTENT -->
-    <main>
-      <!-- ЭКРАН 1: Список -->
-      <section id="list" class="screen active">
+      <!-- ========== ЭКРАН РЕГИСТРАЦИИ (без оплаты) ========== -->
+      <section id="auth" class="screen active">
+        <div class="auth-wrap">
+          <h2>Регистрация</h2>
+          <p class="subtitle">Один раз — и вы в системе. Повторно регистрироваться не нужно.</p>
+          <form class="auth-form" id="auth-form" novalidate>
+            <label for="name">Имя *</label>
+            <input type="text" id="name" placeholder="Как к вам обращаться" required>
+            <div class="error-msg" id="err-name">Укажите имя</div>
+
+            <label for="group">Группа *</label>
+            <input type="text" id="group" placeholder="Например, ИС-21" required>
+            <div class="error-msg" id="err-group">Укажите группу</div>
+
+            <label for="phone">Телефон (необязательно)</label>
+            <input type="tel" id="phone" placeholder="+7 900 123-45-67">
+
+            <button type="submit" class="btn" style="width:100%; margin-top:1.6rem">
+              Войти
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- ========== СПИСОК МЕРОПРИЯТИЙ ========== -->
+      <section id="list" class="screen">
+        <!-- Верхняя реклама (горизонтальная) -->
+        <div class="ad-top">
+          <div>
+            <div class="label">Реклама</div>
+            <p><strong>Студенческая столовая</strong> — комплексный обед от 180 ₽, скидка 15% по студенческому</p>
+          </div>
+          <a class="ad-btn" onclick="return false">Подробнее</a>
+        </div>
+
+        <div class="user-bar" id="user-bar"></div>
+
         <h2>Мероприятия колледжа</h2>
         <div class="cards" id="cards-container"></div>
       </section>
 
-      <!-- ЭКРАН 2: Карточка -->
+      <!-- ========== КАРТОЧКА МЕРОПРИЯТИЯ ========== -->
       <section id="detail" class="screen">
         <a class="back-link" onclick="showScreen('list')">← Назад к списку</a>
         <div id="detail-content"></div>
       </section>
 
-      <!-- ЭКРАН 3: Форма -->
-      <section id="form-screen" class="screen">
-        <a class="back-link" onclick="showScreen('detail')">← Назад к мероприятию</a>
-        <h2>Заявка на участие</h2>
-        <p id="form-event-name" style="margin-bottom:1rem;color:var(--muted)"></p>
-        <form id="apply-form" novalidate>
-          <label for="name">Имя *</label>
-          <input type="text" id="name" name="name" placeholder="Как к вам обращаться" required>
-          <div class="error-msg" id="err-name">Укажите имя</div>
-
-          <label for="group">Группа *</label>
-          <input type="text" id="group" name="group" placeholder="Например, ИС-21" required>
-          <div class="error-msg" id="err-group">Укажите группу</div>
-
-          <label for="contact">Контакт (email или телефон)</label>
-          <input type="text" id="contact" name="contact" placeholder="Необязательно">
-
-          <button type="submit" class="btn">Отправить заявку</button>
-        </form>
-      </section>
-
-      <!-- ЭКРАН 4: Успех -->
+      <!-- ========== УСПЕХ (сразу после заявки, без повторной формы) ========== -->
       <section id="success" class="screen">
         <div class="success-box">
           <h3>✓ Заявка отправлена</h3>
-          <p>Спасибо! Ваша заявка на участие принята.<br>Организатор свяжется с вами при необходимости.</p>
-          <button class="btn" onclick="showScreen('list')" style="margin-top:1rem">Вернуться к списку</button>
+          <p style="font-size:1.1rem">Спасибо, <strong id="success-name"></strong>!<br>
+          Ваша заявка на участие принята.<br>
+          Организатор свяжется с вами при необходимости.</p>
+          <button class="btn" onclick="showScreen('list')" style="margin-top:1.4rem">
+            Вернуться к списку
+          </button>
         </div>
       </section>
-    </main>
 
-    <!-- RIGHT BANNER -->
-    <aside class="side-banner right">
-      <div class="ad-title">Акция</div>
-      <div class="neon-promo">
-        <div class="big">CampusGo</div>
-        <div class="small">Неоновый сезон</div>
-        <div class="ad-text" style="color:#ccc;margin-bottom:0.4rem;">Регистрируйся на события и лови вайб кампуса ✨</div>
-        <span class="cta">Участвуй</span>
+    </div>
+
+    <!-- ========== БОКОВАЯ РЕКЛАМА ========== -->
+    <aside class="ad-sidebar">
+      <div class="ad-card ad-support">
+        <div class="label">Поддержите автора</div>
+        <h4>Команда Chempion</h4>
+        <p>Проект сделан с душой. Если нравится — поддержите разработку!</p>
+        <a class="ad-btn" onclick="alert('Спасибо за поддержку команды Chempion! ❤️')">Поддержать</a>
+      </div>
+
+      <div class="ad-card">
+        <div class="label">Реклама</div>
+        <h4>Книжный киоск</h4>
+        <p>Учебники и канцтовары. Акция: 2=3 на тетради.</p>
+        <a class="ad-btn" onclick="return false">Смотреть</a>
+      </div>
+
+      <div class="ad-card">
+        <div class="label">Реклама</div>
+        <h4>Коворкинг «Лофт»</h4>
+        <p>Тихие места для учёбы. Первый час бесплатно.</p>
+        <a class="ad-btn" onclick="return false">Забронировать</a>
+      </div>
+
+      <div class="ad-card">
+        <div class="label">Реклама</div>
+        <h4>Спортзал колледжа</h4>
+        <p>Тренажёры + йога. Абонемент от 900 ₽/мес.</p>
+        <a class="ad-btn" onclick="return false">Записаться</a>
       </div>
     </aside>
   </div>
 
+  <!-- ========== МОДАЛКА ТЕХПОДДЕРЖКИ ========== -->
+  <div class="modal-overlay" id="support-modal">
+    <div class="modal">
+      <h3>Техподдержка</h3>
+      <p>Возникли вопросы?</p>
+      <p><strong>Telegram:</strong> @Lemonathion</p>
+      <p><strong>Email:</strong> support@campusgo.local</p>
+      <p><strong>Время работы:</strong> 9:00–21:00</p>
+      <p style="margin-top:1rem; color:var(--muted); font-size:0.95rem">
+        Команда Chempion всегда на связи
+      </p>
+      <button class="btn close-btn" onclick="closeSupport()">Закрыть</button>
+    </div>
+  </div>
+
+  <!-- ========== МОДАЛКА ТЕСТА IQ ========== -->
+  <div class="modal-overlay" id="iq-modal">
+    <div class="modal">
+      <h3>Тест на IQ</h3>
+      <p style="color:var(--muted); margin-bottom:1rem">5 вопросов. Выберите один вариант.</p>
+
+      <div id="iq-form">
+        <div class="iq-question">
+          <p>1. Какое число продолжит ряд: 2, 4, 8, 16, …?</p>
+          <div class="iq-options">
+            <label><input type="radio" name="q1" value="0"> 24</label>
+            <label><input type="radio" name="q1" value="1"> 32</label>
+            <label><input type="radio" name="q1" value="0"> 20</label>
+          </div>
+        </div>
+
+        <div class="iq-question">
+          <p>2. Если все А — это Б, а некоторые Б — это В, то…</p>
+          <div class="iq-options">
+            <label><input type="radio" name="q2" value="0"> Все А — это В</label>
+            <label><input type="radio" name="q2" value="1"> Некоторые А могут быть В</label>
+            <label><input type="radio" name="q2" value="0"> Ни одно А не В</label>
+          </div>
+        </div>
+
+        <div class="iq-question">
+          <p>3. Найдите лишнее: яблоко, груша, морковь, банан</p>
+          <div class="iq-options">
+            <label><input type="radio" name="q3" value="0"> Яблоко</label>
+            <label><input type="radio" name="q3" value="1"> Морковь</label>
+            <label><input type="radio" name="q3" value="0"> Банан</label>
+          </div>
+        </div>
+
+        <div class="iq-question">
+          <p>4. Сколько будет 15% от 200?</p>
+          <div class="iq-options">
+            <label><input type="radio" name="q4" value="0"> 20</label>
+            <label><input type="radio" name="q4" value="1"> 30</label>
+            <label><input type="radio" name="q4" value="0"> 25</label>
+          </div>
+        </div>
+
+        <div class="iq-question">
+          <p>5. Какое слово получится, если переставить буквы в «АТРЕЛ»?</p>
+          <div class="iq-options">
+            <label><input type="radio" name="q5" value="1"> ТЕАТР</label>
+            <label><input type="radio" name="q5" value="0"> ТРЕЛА</label>
+            <label><input type="radio" name="q5" value="0"> АЛТЕР</label>
+          </div>
+        </div>
+
+        <button class="btn" onclick="checkIQ()" style="width:100%">Узнать результат</button>
+      </div>
+
+      <div class="iq-result" id="iq-result"></div>
+      <button class="btn close-btn" onclick="closeIQ()" style="margin-top:1rem">Закрыть</button>
+    </div>
+  </div>
+
   <footer>
-    CampusGo MVP · Учебный проект · Спринт 1 · Команда <span>EventFlow</span>
+    CampusGo MVP · Учебный проект · Команда Chempion
   </footer>
 
   <script>
+    // ===== ДАННЫЕ МЕРОПРИЯТИЙ =====
     const events = [
       {
         id: 1,
@@ -460,28 +605,65 @@
         date: "1–2 ноября 2025",
         place: "Корпус Б, лаборатория 12",
         description: "24-часовой хакатон по веб-разработке. Собирайте команду или приходите в одиночку — поможем найти напарников."
+      },
+      {
+        id: 4,
+        title: "Киноночь под открытым небом",
+        date: "5 ноября 2025, 20:30",
+        place: "Двор главного корпуса",
+        description: "Показ классики мирового кино на большом экране. Берите пледы и термосы. Вход свободный для студентов."
+      },
+      {
+        id: 5,
+        title: "Турнир по настольному теннису",
+        date: "8 ноября 2025, 14:00",
+        place: "Спортзал",
+        description: "Индивидуальный и парный разряд. Запись до 6 ноября. Победители получат кубки и мерч колледжа."
+      },
+      {
+        id: 6,
+        title: "Мастер-класс по публичным выступлениям",
+        date: "12 ноября 2025, 16:00",
+        place: "Аудитория 201",
+        description: "Как говорить уверенно и держать внимание аудитории. Ведёт преподаватель риторики. Количество мест ограничено."
+      },
+      {
+        id: 7,
+        title: "Вечер настольных игр",
+        date: "15 ноября 2025, 17:00",
+        place: "Студенческий клуб",
+        description: "Монополия, Уно, Манчкин, Impostor и многое другое. Можно принести свои игры. Чай и печенье включены."
       }
     ];
 
+    // Текущий пользователь (заполняется один раз при регистрации)
+    let currentUser = { name: '', group: '', phone: '' };
     let currentEvent = null;
 
+    // ===== ПЕРЕКЛЮЧЕНИЕ ЭКРАНОВ =====
     function showScreen(id) {
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       document.getElementById(id).classList.add('active');
       window.scrollTo(0, 0);
     }
 
+    // ===== ОТРИСОВКА СПИСКА =====
     function renderList() {
       const container = document.getElementById('cards-container');
       container.innerHTML = events.map(e => `
         <div class="card" onclick="openDetail(${e.id})">
           <h3>${e.title}</h3>
           <div class="meta">📅 ${e.date} · 📍 ${e.place}</div>
-          <div class="desc">${e.description.substring(0, 100)}…</div>
+          <div class="desc">${e.description.substring(0, 110)}…</div>
         </div>
       `).join('');
+
+      // Показываем, кто вошёл
+      document.getElementById('user-bar').innerHTML =
+        `Вы вошли как: <strong>${currentUser.name}</strong> · группа ${currentUser.group}`;
     }
 
+    // ===== ОТКРЫТЬ КАРТОЧКУ =====
     function openDetail(id) {
       currentEvent = events.find(e => e.id === id);
       document.getElementById('detail-content').innerHTML = `
@@ -490,38 +672,85 @@
           <p><strong>Дата:</strong> ${currentEvent.date}</p>
           <p><strong>Место:</strong> ${currentEvent.place}</p>
         </div>
-        <p>${currentEvent.description}</p>
-        <button class="btn" onclick="openForm()">Подать заявку</button>
+        <p style="font-size:1.15rem">${currentEvent.description}</p>
+        <button class="btn" onclick="applyDirect()">Подать заявку</button>
       `;
       showScreen('detail');
     }
 
-    function openForm() {
-      document.getElementById('form-event-name').textContent = 'Мероприятие: ' + currentEvent.title;
-      document.getElementById('apply-form').reset();
-      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-      showScreen('form-screen');
+    // ===== ЗАЯВКА БЕЗ ПОВТОРНОЙ ФОРМЫ =====
+    // Данные уже есть из регистрации — сразу успех
+    function applyDirect() {
+      document.getElementById('success-name').textContent = currentUser.name;
+      showScreen('success');
     }
 
-    document.getElementById('apply-form').addEventListener('submit', function(e) {
+    // ===== РЕГИСТРАЦИЯ (один раз) =====
+    document.getElementById('auth-form').addEventListener('submit', function(e) {
       e.preventDefault();
-      let valid = true;
-
       const name = document.getElementById('name').value.trim();
       const group = document.getElementById('group').value.trim();
+      const phone = document.getElementById('phone').value.trim();
 
       document.getElementById('err-name').style.display = name ? 'none' : 'block';
       document.getElementById('err-group').style.display = group ? 'none' : 'block';
 
-      if (!name || !group) valid = false;
-
-      if (valid) {
-        // В MVP данные никуда не отправляются — только демонстрация
-        showScreen('success');
+      if (name && group) {
+        currentUser = { name, group, phone };
+        renderList();
+        showScreen('list');
       }
     });
 
-    renderList();
+    // ===== ТЕХПОДДЕРЖКА =====
+    function openSupport() {
+      document.getElementById('support-modal').classList.add('active');
+    }
+    function closeSupport() {
+      document.getElementById('support-modal').classList.remove('active');
+    }
+    document.getElementById('support-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeSupport();
+    });
+
+    // ===== ТЕСТ IQ =====
+    function openIQ() {
+      document.getElementById('iq-result').classList.remove('show');
+      document.getElementById('iq-result').innerHTML = '';
+      // сброс ответов
+      document.querySelectorAll('#iq-form input[type=radio]').forEach(r => r.checked = false);
+      document.getElementById('iq-modal').classList.add('active');
+    }
+    function closeIQ() {
+      document.getElementById('iq-modal').classList.remove('active');
+    }
+    document.getElementById('iq-modal').addEventListener('click', function(e) {
+      if (e.target === this) closeIQ();
+    });
+
+    function checkIQ() {
+      let score = 0;
+      for (let i = 1; i <= 5; i++) {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && selected.value === '1') score++;
+      }
+
+      // Простая шкала «IQ» (развлекательная, не настоящий тест)
+      let iq = 80 + score * 12; // 80…140
+      let comment = '';
+      if (score <= 1) comment = 'Есть куда расти. Попробуйте ещё раз!';
+      else if (score <= 3) comment = 'Хороший результат. Логика на уровне.';
+      else if (score === 4) comment = 'Отлично! Вы мыслите чётко.';
+      else comment = 'Вау! Почти идеально. Настоящий мозг колледжа.';
+
+      const box = document.getElementById('iq-result');
+      box.innerHTML = `
+        <p style="font-size:1.3rem; margin-bottom:0.5rem"><strong>Ваш результат: ${score} из 5</strong></p>
+        <p style="font-size:1.5rem; color:var(--accent)">≈ IQ ${iq}</p>
+        <p style="margin-top:0.6rem">${comment}</p>
+      `;
+      box.classList.add('show');
+    }
   </script>
 </body>
 </html>
